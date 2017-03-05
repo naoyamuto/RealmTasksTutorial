@@ -11,7 +11,26 @@
 		B273D4931E6C4F32004926F9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B273D4921E6C4F32004926F9 /* ViewController.swift */; };
 		B273D4981E6C4F32004926F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B273D4971E6C4F32004926F9 /* Assets.xcassets */; };
 		B273D49B1E6C4F32004926F9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B273D4991E6C4F32004926F9 /* LaunchScreen.storyboard */; };
+		B291FE6B1E6C524600235340 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B291FE691E6C524600235340 /* Realm.framework */; };
+		B291FE6C1E6C524600235340 /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B291FE691E6C524600235340 /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B291FE6D1E6C524600235340 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B291FE6A1E6C524600235340 /* RealmSwift.framework */; };
+		B291FE6E1E6C524600235340 /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B291FE6A1E6C524600235340 /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B291FE6F1E6C524600235340 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				B291FE6E1E6C524600235340 /* RealmSwift.framework in Embed Frameworks */,
+				B291FE6C1E6C524600235340 /* Realm.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		B273D48D1E6C4F32004926F9 /* RealmTasksTutorial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RealmTasksTutorial.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -21,6 +40,8 @@
 		B273D49A1E6C4F32004926F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B273D49C1E6C4F32004926F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B273D4A21E6C5003004926F9 /* RealmTasksTutorial.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RealmTasksTutorial.entitlements; sourceTree = "<group>"; };
+		B291FE691E6C524600235340 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
+		B291FE6A1E6C524600235340 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -28,6 +49,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B291FE6D1E6C524600235340 /* RealmSwift.framework in Frameworks */,
+				B291FE6B1E6C524600235340 /* Realm.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -37,6 +60,8 @@
 		B273D4841E6C4F32004926F9 = {
 			isa = PBXGroup;
 			children = (
+				B291FE691E6C524600235340 /* Realm.framework */,
+				B291FE6A1E6C524600235340 /* RealmSwift.framework */,
 				B273D48F1E6C4F32004926F9 /* RealmTasksTutorial */,
 				B273D48E1E6C4F32004926F9 /* Products */,
 			);
@@ -73,6 +98,7 @@
 				B273D4891E6C4F32004926F9 /* Sources */,
 				B273D48A1E6C4F32004926F9 /* Frameworks */,
 				B273D48B1E6C4F32004926F9 /* Resources */,
+				B291FE6F1E6C524600235340 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -256,6 +282,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = RealmTasksTutorial/RealmTasksTutorial.entitlements;
 				DEVELOPMENT_TEAM = HAL2GZP96H;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = RealmTasksTutorial/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jp.naoyamuto.RealmTasksTutorial;
@@ -270,6 +300,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = RealmTasksTutorial/RealmTasksTutorial.entitlements;
 				DEVELOPMENT_TEAM = HAL2GZP96H;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = RealmTasksTutorial/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jp.naoyamuto.RealmTasksTutorial;
@@ -297,6 +331,7 @@
 				B273D4A11E6C4F32004926F9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
