@@ -11,16 +11,57 @@ import RealmSwift
 
 class ViewController: UITableViewController {
     var items = List<Task>()
+    var notificationToken: NotificationToken!
+    var realm: Realm!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupRealm()
     }
 
     func setupUI() {
         title = "My Tasks"
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(add))
+        navigationItem.leftBarButtonItem = editButtonItem
+    }
+    
+    func setupRealm() {
+        // Log in existing user with username and password
+        let username = "xxxx"
+        let password = "xxxx"
+        SyncUser.logIn(with: .usernamePassword(username: username, password: password, register: false), server: URL(string: "http://127.0.0.1:9080")!) { user, error in
+            guard let user = user else {
+                fatalError(String(describing: error))
+            }
+            
+            DispatchQueue.main.async {
+                // Open Realm
+                let configuration = Realm.Configuration(
+                    syncConfiguration: SyncConfiguration(user: user, realmURL: URL(string: "realm://127.0.0.1:9080/~/realmtasks")!)
+                )
+                self.realm = try! Realm(configuration: configuration)
+                
+                // Show initial tasks
+                func updateList() {
+                    if self.items.realm == nil, let list = self.realm.objects(TaskList.self).first {
+                        self.items = list.items
+                    }
+                    self.tableView.reloadData()
+                }
+                updateList()
+                
+                // Notify us when Realm changes
+                self.notificationToken = self.realm.addNotificationBlock { _ in
+                    updateList()
+                }
+            }
+        }
+    }
+    
+    deinit {
+        notificationToken.stop()
     }
 
     // MARK: Functions
@@ -35,8 +76,10 @@ class ViewController: UITableViewController {
         alertController.addAction(UIAlertAction(title: "Add", style: .default) { _ in
             guard let text = alertTextField.text , !text.isEmpty else { return }
 
-            self.items.append(Task(value: ["text": text]))
-            self.tableView.reloadData()
+            let items = self.items
+            try! items.realm?.write {
+                items.insert(Task(value: ["text": text]), at: items.filter("completed = false").count)
+            }
         })
         present(alertController, animated: true, completion: nil)
     }
@@ -53,6 +96,38 @@ class ViewController: UITableViewController {
         cell.textLabel?.text = item.text
         cell.textLabel?.alpha = item.completed ? 0.5 : 1
         return cell
+    }
+
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        try! items.realm?.write {
+            items.move(from: sourceIndexPath.row, to: destinationIndexPath.row)
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            try! realm.write {
+                let item = items[indexPath.row]
+                realm.delete(item)
+            }
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let item = items[indexPath.row]
+        try! item.realm?.write {
+            item.completed = !item.completed
+            let destinationIndexPath: IndexPath
+            if item.completed {
+                // move cell to bottom
+                destinationIndexPath = IndexPath(row: items.count - 1, section: 0)
+            } else {
+                // move cell just above the first completed item
+                let completedCount = items.filter("completed = true").count
+                destinationIndexPath = IndexPath(row: items.count - completedCount - 1, section: 0)
+            }
+            items.move(from: indexPath.row, to: destinationIndexPath.row)
+        }
     }
 }
 
